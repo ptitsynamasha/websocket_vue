@@ -32,7 +32,8 @@
             <v-btn
               color="primary"
               @click="onSubmit"
-              :disabled="!valid"
+              :loading="loading"
+              :disabled="!valid || loading"
             >Login
             </v-btn>
           </v-card-actions>
@@ -65,9 +66,24 @@
           const user = {
             email: this.email,
             password: this.password
-          }
+          };
+          this.$store.dispatch('loginUser', user)
+            .then(() => {
+              this.$router.push('/')
+            })
+            .catch(() => {
+            })
         }
-
+      }
+    },
+    computed: {
+      loading() {
+        return this.$store.getters.loading
+      }
+    },
+    created() {
+      if (this.$route.query['loginError']) {
+        this.$store.dispatch('setError', 'Please login')
       }
     }
   }

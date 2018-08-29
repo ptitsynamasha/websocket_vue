@@ -41,7 +41,8 @@
             <v-btn
               color="primary"
               @click="onSubmit"
-              :disabled="!valid"
+              :disabled="!valid || loading"
+              :loading="loading"
             >Registration
             </v-btn>
           </v-card-actions>
@@ -57,7 +58,7 @@
       return {
         email: '',
         password: '',
-        confirmPassword:'',
+        confirmPassword: '',
         valid: false,
         emailRules: [
           v => !!v || 'E-mail is required',
@@ -67,7 +68,7 @@
           v => !!v || 'Password is required',
           v => (v && v.length >= 5) || 'Password must be > than 5 characters'
         ],
-        confirmPasswordRules:[
+        confirmPasswordRules: [
           v => !!v || 'Confirm Password is required',
           v => v === this.password || 'Passwords should match'
         ]
@@ -79,9 +80,19 @@
           const user = {
             email: this.email,
             password: this.password
-          }
+          };
+          this.$store.dispatch('registerUser', user)
+            .then(() => {
+              this.$router.push('/')
+            })
+            .catch(() => {})
         }
 
+      }
+    },
+    computed: {
+      loading() {
+        return this.$store.getters.loading
       }
     }
   }

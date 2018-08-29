@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!loading">
     <v-container fluid>
       <v-layout row>
         <v-flex xs12>
@@ -17,7 +17,6 @@
         </v-flex>
       </v-layout>
     </v-container>
-
     <v-container grid-list-lg>
       <v-layout row wrap>
         <v-flex
@@ -43,9 +42,25 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn flat color="orange" :to="'/object/' + object.id">Open</v-btn>
-              <v-btn raised class="primary">Buy</v-btn>
+
+              <app-buy-modal :object="object"></app-buy-modal>
+
             </v-card-actions>
           </v-card>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </div>
+  <div v-else>
+    <v-container>
+      <v-layout row>
+        <v-flex xs12 class="text-xs-center pt-5">
+          <v-progress-circular
+            :size="100"
+            :width="4"
+            color="purple"
+            indeterminate
+          ></v-progress-circular>
         </v-flex>
       </v-layout>
     </v-container>
@@ -58,8 +73,11 @@
       promoObjects() {
         return this.$store.getters.promoObjects
       },
-      objects(){
+      objects() {
         return this.$store.getters.objects
+      },
+      loading() {
+        return this.$store.getters.loading
       }
     }
   }

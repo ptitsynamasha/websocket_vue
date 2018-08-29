@@ -2,30 +2,57 @@
   <v-container>
     <v-layout row>
       <v-flex xs12>
-        <v-card>
+        <v-card v-if="!loading">
           <v-card-media
-          src="https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-          height="300px"
+            :src="object.imageSrc"
+            height="300px"
           ></v-card-media>
           <v-card-text>
-            <h1 class="text--primary">title</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, laudantium?</p>
+            <h1 class="text--primary">{{object.title}}</h1>
+            <p>{{object.description}}</p>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="warning" flat>Edit</v-btn>
-            <v-btn class="success">Buy</v-btn>
+
+            <addEditObjectModal :object="object" v-if="isOwner"></addEditObjectModal>
+
+            <app-buy-modal :object="object"></app-buy-modal>
+
           </v-card-actions>
         </v-card>
+
+        <div v-else class="text-xs-center">
+          <v-progress-circular
+            :size="100"
+            :width="4"
+            color="purple"
+            indeterminate
+          ></v-progress-circular>
+
+        </div>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
+  import EditObjectModal from './EditObjectModal'
+
   export default {
-    data() {
-      return {}
-    }
+    props: ['id'],
+    computed: {
+      object() {
+        return this.$store.getters.objectById(this.id)
+      },
+      loading() {
+        return this.$store.getters.loading
+      },
+      isOwner() {
+        return this.object.ownerId === this.$store.getters.user.id
+      }
+    },
+    components: {
+      addEditObjectModal: EditObjectModal
+    },
   }
 </script>

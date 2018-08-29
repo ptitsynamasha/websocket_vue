@@ -7,6 +7,7 @@ import ObjectList from '@/components/Object/ObjectList'
 import Login from '@/components/Auth/Login'
 import Registration from '@/components/Auth/Registration'
 import Orders from '@/components/User/Orders'
+import AuthGuard from './auth.guard'
 
 Vue.use(Router);
 
@@ -20,17 +21,20 @@ export default new Router({
     {
       path: '/object/:id',
       name: 'object',
+      props: true,
       component: Object
     },
     {
       path: '/list',
       name: 'list',
-      component: ObjectList
+      component: ObjectList,
+      beforeEnter: AuthGuard
     },
     {
       path: '/new',
       name: 'newObject',
-      component: NewObject
+      component: NewObject,
+      beforeEnter: AuthGuard
     },
     {
       path: '/login',
@@ -45,7 +49,8 @@ export default new Router({
     {
       path: '/orders',
       name: 'orders',
-      component: Orders
+      component: Orders,
+      beforeEnter: AuthGuard
     },
   ],
   mode: 'history'
