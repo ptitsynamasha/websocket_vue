@@ -68,11 +68,7 @@
             password: this.password
           };
           this.$store.dispatch('chatLoginUser', user)
-            .then(() => {
-              this.$router.push('/chat')
-            })
-            .catch(() => {
-            })
+            .then(() => this.$router.push('/'));
         }
       }
     },

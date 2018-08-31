@@ -57,12 +57,23 @@ export default new Router({
     {
       path: '/chat',
       name: 'chat',
-      component: Chat
+      component: Chat,
+      beforeEnter: AuthGuard
     },
     {
       path: '/chat-login',
-      name: 'chat',
-      component: ChatLogin
+      name: 'chatLogin',
+      component: ChatLogin,
+    },
+    {
+      path: '/chat-logout',
+      name: 'chatLogout',
+      beforeEnter: (to, from, next) => {
+        this.a.app.$store.dispatch('clearSocket');
+        this.a.app.$socket.emit('logout', this.a.app.$store.getters.userChat.token);
+        this.a.app.$store.dispatch('chatLogoutUser');
+        this.a.app.$router.push('/')
+      }
     },
   ],
   mode: 'history'

@@ -18,6 +18,10 @@ export default {
     setUserChat(state, payload) {
       state.userChat = payload;
       localStorage.setItem('userChat', JSON.stringify(payload));
+    },
+    unsetUserChat(state) {
+      state.userChat = null;
+      localStorage.removeItem('userChat');
     }
   },
   actions: {
@@ -25,20 +29,21 @@ export default {
       commit('clearError');
       commit('setLoading', true);
 
-      const chatUser = {
-        email,
-        password
-      };
-
-      Vue.http.post('/api/auth/login', chatUser)
-        .then(resp => {
-          commit('setUserChat', new ChatUser(resp.body));
-        })
-        .catch(e => commit('setError', e))
-        .finally(() => {
+      Vue.http.post('/api/auth/login', {email, password})
+        .then(response => response.json())
+        .then(data => {
+          commit('setUserChat', new ChatUser(data));
           commit('setLoading', false);
         })
+        .catch(e => {
+          commit('setError', e);
+          commit('setLoading', false);
+        });
+
     },
+    chatLogoutUser({commit}) {
+      commit('unsetUserChat');
+    }
   },
   getters: {
     userChat(state) {
