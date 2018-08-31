@@ -41,13 +41,8 @@
     </v-layout>
 
     <v-layout v-else>
-      <v-flex xs12 class="text-xs-center">
-        <v-progress-circular
-          :size="100"
-          :width="4"
-          color="purple"
-          indeterminate
-        ></v-progress-circular>
+      <v-flex>
+        <app-loading></app-loading>
       </v-flex>
     </v-layout>
 

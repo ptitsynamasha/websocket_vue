@@ -2,13 +2,8 @@
   <v-container>
     <v-layout row>
 
-      <v-flex xs12 class="text-xs-center" pt-5 v-if="loading">
-        <v-progress-circular
-          :size="100"
-          :width="4"
-          color="purple"
-          indeterminate
-        ></v-progress-circular>
+      <v-flex v-if="loading">
+        <app-loading></app-loading>
       </v-flex>
 
       <v-flex xs12 sm6 offset-sm3 v-else-if="!loading && orders.length !== 0">
@@ -58,27 +53,22 @@
 
 <script>
   export default {
-    data() {
-      return {
-        orders: [
-          {
-            id: '1',
-            name: "masha",
-            phone: '00000',
-            objectId: '2',
-            done: false
-          }
-        ]
-      }
-    },
+
     methods: {
       markDone(order) {
-        order.done = true
+        this.$store.dispatch('markOrderDone', order.id)
+          .then(() => {
+            order.done = true;
+          })
+          .catch(() => {})
       }
     },
     computed: {
       loading() {
         return this.$store.getters.loading;
+      },
+      orders() {
+        return this.$store.getters.orders
       }
     },
     created() {

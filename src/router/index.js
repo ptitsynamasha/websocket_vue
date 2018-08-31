@@ -7,6 +7,8 @@ import ObjectList from '@/components/Object/ObjectList'
 import Login from '@/components/Auth/Login'
 import Registration from '@/components/Auth/Registration'
 import Orders from '@/components/User/Orders'
+import Chat from '@/components/Chat/Chat'
+import ChatLogin from '@/components/Chat/ChatLogin'
 import AuthGuard from './auth.guard'
 
 Vue.use(Router);
@@ -51,6 +53,16 @@ export default new Router({
       name: 'orders',
       component: Orders,
       beforeEnter: AuthGuard
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: Chat
+    },
+    {
+      path: '/chat-login',
+      name: 'chat',
+      component: ChatLogin
     },
   ],
   mode: 'history'

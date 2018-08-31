@@ -121,19 +121,38 @@
       isUserLoggedIn() {
         return this.$store.getters.isUserLoggedIn
       },
+      isUserLoggedInChat() {
+        return this.$store.getters.isUserLoggedInChat
+      },
       links() {
+        let arrayLinks = [];
+
         if (this.isUserLoggedIn) {
-          return [
+          arrayLinks.push(
             {title: 'Orders', icon: 'bookmark_border', url: '/orders'},
             {title: 'New', icon: 'note_add', url: '/new'},
             {title: 'My object', icon: 'list', url: '/list'},
-          ]
-        } else {
-          return [
+          )
+        }
+
+        if (!this.isUserLoggedIn) {
+          arrayLinks.push(
             {title: 'Login', icon: 'lock', url: '/login'},
             {title: 'Registration', icon: 'face', url: '/registration'},
-          ]
+          )
         }
+        if (this.isUserLoggedInChat) {
+          arrayLinks.push(
+            {title: 'Chat', icon: 'chat', url: '/chat'},
+            {title: 'Logout from chat', icon: 'chat', url: '/chat-logout'},
+          )
+        }
+        if (!this.isUserLoggedInChat) {
+          arrayLinks.push(
+            {title: 'Login in chat', icon: 'chat', url: '/chat-login'},
+          )
+        }
+        return arrayLinks;
       }
     }
   }
